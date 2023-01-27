@@ -5,14 +5,13 @@ pragma solidity 0.8.17;
 import "hardhat/console.sol";
 
 contract Greeter {
+    address private _owner;
+
     string private _greeting;
     bool private _callSetGreeting;
-    uint256 private _totalCallCount;
-
-    mapping(address => uint256) private _callCount;
     string [] private _greetingHistory;
 
-    address private _owner;
+    mapping(address => uint256) public balances;
 
     event SetGreeting(address sender, string oldGreeting, string newGreeting);
 
@@ -24,6 +23,9 @@ contract Greeter {
 
     function setGreetingPayable(string memory greeting_) public payable {
         require(msg.value == 1 ether, "msg.value is not 1 ether");
+        
+        balances[msg.sender] += msg.value;
+        
         _setGreetingPrivate(msg.sender, greeting_);
     }
 
@@ -45,8 +47,10 @@ contract Greeter {
 
     function _setGreetingPrivate(address sender, string memory greeting_) private {
         console.log("Changing greeting from '%s' to '%s'", _greeting, greeting_);
-        _totalCallCount++;
-        _callCount[sender]++;
+
+        if (_callSetGreeting == false) {
+            _callSetGreeting = true;
+        }
         
         string [] storage greetingHistory = _getGreetingHistory();
         greetingHistory.push(_greeting);
@@ -58,5 +62,14 @@ contract Greeter {
 
     function _getGreetingHistory() private view returns(string [] storage) {
         return _greetingHistory;
+    }
+
+    function withdraw() public payable {
+        require(_owner == msg.sender, "only owner");
+        
+        address thisAddress = address(this);
+        console.log("contract balance: %d", thisAddress.balance);
+        bool result = payable(thisAddress).send(thisAddress.balance);
+        require(result, "Failed to send Ether");
     }
 }
