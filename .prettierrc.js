@@ -3,16 +3,17 @@ module.exports = {
   semi: true,
   useTabs: false,
   tabWidth: 2,
-  trailingComma: "all",
+  trailingComma: 'all',
   printWidth: 120,
-  arrowParens: "avoid",
+  arrowParens: 'avoid',
   overrides: [
     {
-      files: "*.sol",
+      files: '*.sol',
       options: {
+        tabWidth: 4,
         singleQuote: false,
         printWidth: 120,
-        explicitTypes: "always",
+        explicitTypes: 'always',
       },
     },
   ],

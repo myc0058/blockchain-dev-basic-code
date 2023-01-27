@@ -1,12 +1,18 @@
 module.exports = {
-  env: { browser: true, es6: true, node: true },
+  parser: '@typescript-eslint/parser',
+  parserOptions: { project: './tsconfig.json' },
+  plugins: ['@typescript-eslint'],
   extends: [
-    "eslint:recommended",
-    "airbnb",
-    "prettier",
-    "plugin:prettier/recommended",
+    'eslint:recommended',
+    'prettier',
+    'plugin:import/typescript',
+    'plugin:prettier/recommended',
+    'plugin:@typescript-eslint/recommended',
   ],
   rules: {
-    "prettier/prettier": ["error", { endOfLine: "auto" }],
+    'prettier/prettier': ['error', { endOfLine: 'auto' }],
+    '@typescript-eslint/no-floating-promises': 'error',
+    '@typescript-eslint/no-unused-vars': 'off',
+    '@typescript-eslint/no-empty-function': 'off',
   },
 };

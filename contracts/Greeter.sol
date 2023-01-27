@@ -9,7 +9,7 @@ contract Greeter {
 
     string private _greeting;
     bool private _callSetGreeting;
-    string [] private _greetingHistory;
+    string[] private _greetingHistory;
 
     mapping(address => uint256) public balances;
 
@@ -23,14 +23,10 @@ contract Greeter {
 
     function setGreetingPayable(string memory greeting_) public payable {
         require(msg.value == 1 ether, "msg.value is not 1 ether");
-        
-        balances[msg.sender] += msg.value;
-        
-        _setGreetingPrivate(msg.sender, greeting_);
-    }
 
-    function withdrawAll() public payable {
-        payable(_owner).transfer(address(this).balance);
+        balances[msg.sender] += msg.value;
+
+        _setGreetingPrivate(msg.sender, greeting_);
     }
 
     function setGreeting(string memory greeting_) public {
@@ -40,8 +36,8 @@ contract Greeter {
     function greet() public view returns (string memory) {
         return _greeting;
     }
-        
-    function getGreetingHistoryCount() public view returns(uint256 count) {
+
+    function getGreetingHistoryCount() public view returns (uint256 count) {
         return _greetingHistory.length;
     }
 
@@ -51,8 +47,8 @@ contract Greeter {
         if (_callSetGreeting == false) {
             _callSetGreeting = true;
         }
-        
-        string [] storage greetingHistory = _getGreetingHistory();
+
+        string[] storage greetingHistory = _getGreetingHistory();
         greetingHistory.push(_greeting);
 
         emit SetGreeting(sender, _greeting, greeting_);
@@ -60,13 +56,13 @@ contract Greeter {
         _greeting = greeting_;
     }
 
-    function _getGreetingHistory() private view returns(string [] storage) {
+    function _getGreetingHistory() private view returns (string[] storage) {
         return _greetingHistory;
     }
 
     function withdraw() public payable {
         require(_owner == msg.sender, "only owner");
-        
+
         address thisAddress = address(this);
         console.log("contract balance: %d", thisAddress.balance);
         bool result = payable(thisAddress).send(thisAddress.balance);

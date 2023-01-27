@@ -1,10 +1,12 @@
-import { HardhatUserConfig } from "hardhat/types";
+import { HardhatUserConfig } from 'hardhat/types';
+import '@nomiclabs/hardhat-waffle';
+import 'hardhat-typechain';
 
 const config: HardhatUserConfig = {
   solidity: {
     compilers: [
       {
-        version: "0.8.17",
+        version: '0.8.17',
         settings: {
           optimizer: {
             enabled: true,
@@ -14,7 +16,7 @@ const config: HardhatUserConfig = {
       },
     ],
   },
-  defaultNetwork: "hardhat",
+  defaultNetwork: 'hardhat',
   networks: {
     hardhat: {
       accounts: {
