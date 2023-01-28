@@ -1,6 +1,7 @@
 import { HardhatUserConfig } from 'hardhat/types';
 import '@nomiclabs/hardhat-waffle';
 import 'hardhat-typechain';
+import 'dotenv/config';
 
 const config: HardhatUserConfig = {
   solidity: {
@@ -22,6 +23,11 @@ const config: HardhatUserConfig = {
       accounts: {
         count: 10,
       },
+    },
+    baobab: {
+      url: 'https://klaytn-baobab-rpc.allthatnode.com:8551',
+      accounts: [process.env.PRIVATE_KEY || ''],
+      chainId: 1001,
     },
   },
   mocha: {
