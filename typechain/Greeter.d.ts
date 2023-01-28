@@ -24,37 +24,50 @@ import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 interface GreeterInterface extends ethers.utils.Interface {
   functions: {
     "balances(address)": FunctionFragment;
+    "getGreet()": FunctionFragment;
+    "getGreetingHistoryAll()": FunctionFragment;
     "getGreetingHistoryCount()": FunctionFragment;
-    "greet()": FunctionFragment;
+    "getGreetingHistoryOne(uint256)": FunctionFragment;
     "setGreeting(string)": FunctionFragment;
     "setGreetingPayable(string)": FunctionFragment;
-    "withdraw()": FunctionFragment;
-    "withdrawAll()": FunctionFragment;
+    "withdraw(address)": FunctionFragment;
   };
 
   encodeFunctionData(functionFragment: "balances", values: [string]): string;
+  encodeFunctionData(functionFragment: "getGreet", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "getGreetingHistoryAll",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "getGreetingHistoryCount",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "greet", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "getGreetingHistoryOne",
+    values: [BigNumberish]
+  ): string;
   encodeFunctionData(functionFragment: "setGreeting", values: [string]): string;
   encodeFunctionData(
     functionFragment: "setGreetingPayable",
     values: [string]
   ): string;
-  encodeFunctionData(functionFragment: "withdraw", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "withdrawAll",
-    values?: undefined
-  ): string;
+  encodeFunctionData(functionFragment: "withdraw", values: [string]): string;
 
   decodeFunctionResult(functionFragment: "balances", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "getGreet", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getGreetingHistoryAll",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getGreetingHistoryCount",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "greet", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getGreetingHistoryOne",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "setGreeting",
     data: BytesLike
@@ -64,10 +77,6 @@ interface GreeterInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "withdrawAll",
-    data: BytesLike
-  ): Result;
 
   events: {
     "SetGreeting(address,string,string)": EventFragment;
@@ -97,6 +106,14 @@ export class Greeter extends Contract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
+    getGreet(overrides?: CallOverrides): Promise<[string]>;
+
+    "getGreet()"(overrides?: CallOverrides): Promise<[string]>;
+
+    getGreetingHistoryAll(overrides?: CallOverrides): Promise<[string[]]>;
+
+    "getGreetingHistoryAll()"(overrides?: CallOverrides): Promise<[string[]]>;
+
     getGreetingHistoryCount(
       overrides?: CallOverrides
     ): Promise<[BigNumber] & { count: BigNumber }>;
@@ -105,9 +122,15 @@ export class Greeter extends Contract {
       overrides?: CallOverrides
     ): Promise<[BigNumber] & { count: BigNumber }>;
 
-    greet(overrides?: CallOverrides): Promise<[string]>;
+    getGreetingHistoryOne(
+      index: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
 
-    "greet()"(overrides?: CallOverrides): Promise<[string]>;
+    "getGreetingHistoryOne(uint256)"(
+      index: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
 
     setGreeting(
       greeting_: string,
@@ -129,13 +152,15 @@ export class Greeter extends Contract {
       overrides?: PayableOverrides
     ): Promise<ContractTransaction>;
 
-    withdraw(overrides?: PayableOverrides): Promise<ContractTransaction>;
+    withdraw(
+      to: string,
+      overrides?: PayableOverrides
+    ): Promise<ContractTransaction>;
 
-    "withdraw()"(overrides?: PayableOverrides): Promise<ContractTransaction>;
-
-    withdrawAll(overrides?: PayableOverrides): Promise<ContractTransaction>;
-
-    "withdrawAll()"(overrides?: PayableOverrides): Promise<ContractTransaction>;
+    "withdraw(address)"(
+      to: string,
+      overrides?: PayableOverrides
+    ): Promise<ContractTransaction>;
   };
 
   balances(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
@@ -145,13 +170,27 @@ export class Greeter extends Contract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
+  getGreet(overrides?: CallOverrides): Promise<string>;
+
+  "getGreet()"(overrides?: CallOverrides): Promise<string>;
+
+  getGreetingHistoryAll(overrides?: CallOverrides): Promise<string[]>;
+
+  "getGreetingHistoryAll()"(overrides?: CallOverrides): Promise<string[]>;
+
   getGreetingHistoryCount(overrides?: CallOverrides): Promise<BigNumber>;
 
   "getGreetingHistoryCount()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-  greet(overrides?: CallOverrides): Promise<string>;
+  getGreetingHistoryOne(
+    index: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<string>;
 
-  "greet()"(overrides?: CallOverrides): Promise<string>;
+  "getGreetingHistoryOne(uint256)"(
+    index: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<string>;
 
   setGreeting(
     greeting_: string,
@@ -173,13 +212,15 @@ export class Greeter extends Contract {
     overrides?: PayableOverrides
   ): Promise<ContractTransaction>;
 
-  withdraw(overrides?: PayableOverrides): Promise<ContractTransaction>;
+  withdraw(
+    to: string,
+    overrides?: PayableOverrides
+  ): Promise<ContractTransaction>;
 
-  "withdraw()"(overrides?: PayableOverrides): Promise<ContractTransaction>;
-
-  withdrawAll(overrides?: PayableOverrides): Promise<ContractTransaction>;
-
-  "withdrawAll()"(overrides?: PayableOverrides): Promise<ContractTransaction>;
+  "withdraw(address)"(
+    to: string,
+    overrides?: PayableOverrides
+  ): Promise<ContractTransaction>;
 
   callStatic: {
     balances(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
@@ -189,13 +230,27 @@ export class Greeter extends Contract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    getGreet(overrides?: CallOverrides): Promise<string>;
+
+    "getGreet()"(overrides?: CallOverrides): Promise<string>;
+
+    getGreetingHistoryAll(overrides?: CallOverrides): Promise<string[]>;
+
+    "getGreetingHistoryAll()"(overrides?: CallOverrides): Promise<string[]>;
+
     getGreetingHistoryCount(overrides?: CallOverrides): Promise<BigNumber>;
 
     "getGreetingHistoryCount()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-    greet(overrides?: CallOverrides): Promise<string>;
+    getGreetingHistoryOne(
+      index: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<string>;
 
-    "greet()"(overrides?: CallOverrides): Promise<string>;
+    "getGreetingHistoryOne(uint256)"(
+      index: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<string>;
 
     setGreeting(greeting_: string, overrides?: CallOverrides): Promise<void>;
 
@@ -214,13 +269,9 @@ export class Greeter extends Contract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    withdraw(overrides?: CallOverrides): Promise<void>;
+    withdraw(to: string, overrides?: CallOverrides): Promise<void>;
 
-    "withdraw()"(overrides?: CallOverrides): Promise<void>;
-
-    withdrawAll(overrides?: CallOverrides): Promise<void>;
-
-    "withdrawAll()"(overrides?: CallOverrides): Promise<void>;
+    "withdraw(address)"(to: string, overrides?: CallOverrides): Promise<void>;
   };
 
   filters: {
@@ -239,13 +290,27 @@ export class Greeter extends Contract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    getGreet(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "getGreet()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getGreetingHistoryAll(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "getGreetingHistoryAll()"(overrides?: CallOverrides): Promise<BigNumber>;
+
     getGreetingHistoryCount(overrides?: CallOverrides): Promise<BigNumber>;
 
     "getGreetingHistoryCount()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-    greet(overrides?: CallOverrides): Promise<BigNumber>;
+    getGreetingHistoryOne(
+      index: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
-    "greet()"(overrides?: CallOverrides): Promise<BigNumber>;
+    "getGreetingHistoryOne(uint256)"(
+      index: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     setGreeting(greeting_: string, overrides?: Overrides): Promise<BigNumber>;
 
@@ -264,13 +329,12 @@ export class Greeter extends Contract {
       overrides?: PayableOverrides
     ): Promise<BigNumber>;
 
-    withdraw(overrides?: PayableOverrides): Promise<BigNumber>;
+    withdraw(to: string, overrides?: PayableOverrides): Promise<BigNumber>;
 
-    "withdraw()"(overrides?: PayableOverrides): Promise<BigNumber>;
-
-    withdrawAll(overrides?: PayableOverrides): Promise<BigNumber>;
-
-    "withdrawAll()"(overrides?: PayableOverrides): Promise<BigNumber>;
+    "withdraw(address)"(
+      to: string,
+      overrides?: PayableOverrides
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -284,6 +348,18 @@ export class Greeter extends Contract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    getGreet(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "getGreet()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getGreetingHistoryAll(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "getGreetingHistoryAll()"(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     getGreetingHistoryCount(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
@@ -292,9 +368,15 @@ export class Greeter extends Contract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    greet(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    getGreetingHistoryOne(
+      index: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
-    "greet()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    "getGreetingHistoryOne(uint256)"(
+      index: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     setGreeting(
       greeting_: string,
@@ -316,13 +398,13 @@ export class Greeter extends Contract {
       overrides?: PayableOverrides
     ): Promise<PopulatedTransaction>;
 
-    withdraw(overrides?: PayableOverrides): Promise<PopulatedTransaction>;
+    withdraw(
+      to: string,
+      overrides?: PayableOverrides
+    ): Promise<PopulatedTransaction>;
 
-    "withdraw()"(overrides?: PayableOverrides): Promise<PopulatedTransaction>;
-
-    withdrawAll(overrides?: PayableOverrides): Promise<PopulatedTransaction>;
-
-    "withdrawAll()"(
+    "withdraw(address)"(
+      to: string,
       overrides?: PayableOverrides
     ): Promise<PopulatedTransaction>;
   };

@@ -1,4 +1,9 @@
 module.exports = {
+  env: {
+    browser: false,
+    node: true,
+    es2021: true,
+  },
   parser: '@typescript-eslint/parser',
   parserOptions: { project: './tsconfig.json' },
   plugins: ['@typescript-eslint'],
@@ -6,12 +11,11 @@ module.exports = {
     'eslint:recommended',
     'prettier',
     'plugin:import/typescript',
-    'plugin:prettier/recommended',
     'plugin:@typescript-eslint/recommended',
   ],
   rules: {
-    'prettier/prettier': ['error', { endOfLine: 'auto' }],
     '@typescript-eslint/no-floating-promises': 'error',
+    '@typescript-eslint/require-await': 'error',
     '@typescript-eslint/no-unused-vars': 'off',
     '@typescript-eslint/no-empty-function': 'off',
   },

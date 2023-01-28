@@ -17,7 +17,8 @@ contract Greeter {
 
     constructor(string memory greeting_) {
         console.log("Deploying a Greeter with greeting:", greeting_);
-        _greeting = greeting_;
+
+        _setGreetingPrivate(msg.sender, greeting_);
         _owner = msg.sender;
     }
 
@@ -33,12 +34,20 @@ contract Greeter {
         _setGreetingPrivate(msg.sender, greeting_);
     }
 
-    function greet() public view returns (string memory) {
+    function getGreet() public view returns (string memory) {
         return _greeting;
     }
 
     function getGreetingHistoryCount() public view returns (uint256 count) {
         return _greetingHistory.length;
+    }
+
+    function getGreetingHistoryAll() public view returns (string[] memory) {
+        return _greetingHistory;
+    }
+
+    function getGreetingHistoryOne(uint256 index) public view returns (string memory) {
+        return _greetingHistory[index];
     }
 
     function _setGreetingPrivate(address sender, string memory greeting_) private {
@@ -60,12 +69,12 @@ contract Greeter {
         return _greetingHistory;
     }
 
-    function withdraw() public payable {
+    function withdraw(address to) public payable {
         require(_owner == msg.sender, "only owner");
 
         address thisAddress = address(this);
         console.log("contract balance: %d", thisAddress.balance);
-        bool result = payable(thisAddress).send(thisAddress.balance);
+        bool result = payable(to).send(thisAddress.balance);
         require(result, "Failed to send Ether");
     }
 }
