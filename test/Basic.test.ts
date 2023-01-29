@@ -1,19 +1,19 @@
 import { expect } from 'chai';
 
 describe('Basic', () => {
-  before(async () => {
+  before(() => {
     console.log('execute before');
   });
 
-  beforeEach(async () => {
+  beforeEach(() => {
     console.log('execute beforeEach');
   });
 
-  it('test', async () => {
+  it('test', () => {
     console.log('execute test');
   });
 
-  it('test2 ', async () => {
+  it('test2 ', () => {
     console.log('execute test2');
 
     const str = 'mo mo mo';

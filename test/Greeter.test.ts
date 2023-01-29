@@ -82,23 +82,23 @@ describe('Basic', () => {
 
     await expect(greeter.setGreetingPayable(secondMsg)).to.reverted;
     await expect(greeter.setGreetingPayable(secondMsg)).to.revertedWith(
-      'msg.value is not 1 ether',
+      'msg.value is not 0.1 ether',
     );
 
     await expect(
       greeter.setGreetingPayable(secondMsg, {
-        value: ethers.utils.parseUnits('0.9', 'ether'),
+        value: ethers.utils.parseUnits('0.09', 'ether'),
       }),
-    ).to.revertedWith('msg.value is not 1 ether');
+    ).to.revertedWith('msg.value is not 0.1 ether');
 
     await expect(
       greeter.setGreetingPayable(secondMsg, {
-        value: ethers.utils.parseUnits('1.1', 'ether'),
+        value: ethers.utils.parseUnits('0.11', 'ether'),
       }),
-    ).to.revertedWith('msg.value is not 1 ether');
+    ).to.revertedWith('msg.value is not 0.1 ether');
 
     await greeter.setGreetingPayable(secondMsg, {
-      value: ethers.utils.parseUnits('1', 'ether'),
+      value: ethers.utils.parseUnits('0.1', 'ether'),
     });
 
     const recvMsg = await greeter.getGreet();
@@ -113,29 +113,31 @@ describe('Basic', () => {
     expect(oldContractEther).to.be.equal(ethers.utils.parseUnits('0', 'ether'));
 
     await greeter.connect(other0).setGreetingPayable(secondMsg, {
-      value: ethers.utils.parseUnits('1', 'ether'),
+      value: ethers.utils.parseUnits('0.1', 'ether'),
     });
     await greeter.connect(other0).setGreetingPayable(secondMsg, {
-      value: ethers.utils.parseUnits('1', 'ether'),
+      value: ethers.utils.parseUnits('0.1', 'ether'),
     });
 
     await greeter.connect(other1).setGreetingPayable(secondMsg, {
-      value: ethers.utils.parseUnits('1', 'ether'),
+      value: ethers.utils.parseUnits('0.1', 'ether'),
     });
     await greeter.connect(other2).setGreetingPayable(secondMsg, {
-      value: ethers.utils.parseUnits('1', 'ether'),
+      value: ethers.utils.parseUnits('0.1', 'ether'),
     });
 
     const newContractEther = await waffle.provider.getBalance(greeter.address);
-    expect(newContractEther).to.be.equal(ethers.utils.parseUnits('4', 'ether'));
+    expect(newContractEther).to.be.equal(
+      ethers.utils.parseUnits('0.4', 'ether'),
+    );
 
     const other0Balance = await greeter.balances(other0.address);
     const other1Balance = await greeter.balances(other1.address);
     const other2Balance = await greeter.balances(other2.address);
 
-    expect(other0Balance).to.be.equal(ethers.utils.parseUnits('2', 'ether'));
-    expect(other1Balance).to.be.equal(ethers.utils.parseUnits('1', 'ether'));
-    expect(other2Balance).to.be.equal(ethers.utils.parseUnits('1', 'ether'));
+    expect(other0Balance).to.be.equal(ethers.utils.parseUnits('0.2', 'ether'));
+    expect(other1Balance).to.be.equal(ethers.utils.parseUnits('0.1', 'ether'));
+    expect(other2Balance).to.be.equal(ethers.utils.parseUnits('0.1', 'ether'));
 
     const oldReceiverEther = await waffle.provider.getBalance(receiver.address);
 
@@ -147,7 +149,7 @@ describe('Basic', () => {
     const newAdminEther = await waffle.provider.getBalance(receiver.address);
 
     expect(newAdminEther.sub(oldReceiverEther)).to.be.equal(
-      ethers.utils.parseUnits('4', 'ether'),
+      ethers.utils.parseUnits('0.4', 'ether'),
     );
 
     const lastContractEther = await waffle.provider.getBalance(greeter.address);

@@ -23,7 +23,7 @@ contract Greeter {
     }
 
     function setGreetingPayable(string memory greeting_) public payable {
-        require(msg.value == 1 ether, "msg.value is not 1 ether");
+        require(msg.value == 0.1 ether, "msg.value is not 0.1 ether");
 
         balances[msg.sender] += msg.value;
 

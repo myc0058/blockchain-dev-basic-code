@@ -24,6 +24,7 @@ async function main() {
   const deployedContractJson = JSON.stringify(deployedContract, null, 2);
   fs.writeFileSync(filename, deployedContractJson, {
     flag: 'w',
+    encoding: 'utf8',
   });
 
   console.log(deployedContractJson);
