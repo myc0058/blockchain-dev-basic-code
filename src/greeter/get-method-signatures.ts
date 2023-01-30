@@ -2,7 +2,6 @@ import hre, { ethers } from 'hardhat';
 import { getGasOption } from '../utils/gas';
 import * as fs from 'fs';
 import { Greeter } from '../../typechain';
-import { keccak256, toUtf8Bytes } from 'ethers/lib/utils';
 
 async function main() {
   const [admin] = await hre.ethers.getSigners();
@@ -26,7 +25,9 @@ async function main() {
 
   for (let i = 0; i < keys.length; i++) {
     if (keys[i].includes('(') == true) {
-      const encodedMethodName = keccak256(toUtf8Bytes(keys[i]));
+      const encodedMethodName = ethers.utils.keccak256(
+        ethers.utils.toUtf8Bytes(keys[i]),
+      );
 
       console.log(`${keys[i]} : ${encodedMethodName}`);
     }
