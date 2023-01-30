@@ -3,7 +3,7 @@ import { ethers, waffle } from 'hardhat';
 import GreeterArtifact from '../artifacts/contracts/Greeter.sol/Greeter.json';
 import { Greeter } from '../typechain';
 
-describe('Basic', () => {
+describe('Greeter', () => {
   let greeter: Greeter;
   const initMsg = 'hello blockchain!!!';
 
