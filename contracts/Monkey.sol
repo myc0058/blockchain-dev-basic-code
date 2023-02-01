@@ -55,7 +55,10 @@ contract Monkey is Ownable, ERC721Enumerable, ERC721URIStorage {
             '"description": "Monkey created by Mo Young Chul",',
             '"image": "',
             generateCharacter(tokenId),
-            '"',
+            '",',
+            '"attributes": [{"trait_type": "Level", "value": ',
+            tokenIdToLevels[tokenId].toString(),
+            " }] ",
             "}"
         );
         return string(abi.encodePacked("data:application/json;base64,", Base64.encode(dataURI)));
