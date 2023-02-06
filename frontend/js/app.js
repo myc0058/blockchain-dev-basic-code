@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 
 const Web3 = require('web3');
-const contractInfo = require('./new-monkey.deployed.json');
+const contractInfo = require('../../src/new-monkey/new-monkey.deployed.json');
 
 (async () => {
   let currentAccount = '';
@@ -64,7 +64,6 @@ const contractInfo = require('./new-monkey.deployed.json');
   const balanceOfParam = {
     from: currentAccount,
     to: contractInfo.address,
-    value: '0x0', // 16 진수로 넣어야 함
     data: data,
   };
 
@@ -89,9 +88,9 @@ const contractInfo = require('./new-monkey.deployed.json');
     const param = {
       from: currentAccount,
       to: contractInfo.address,
-      gasLimit: 5000000,
+      gasLimit: Web3.utils.toHex('500000'),
       gasPrice: Web3.utils.toHex(Web3.utils.toWei('750', 'gwei')),
-      value: '0x0', // 16 진수로 넣어야 함
+      value: Web3.utils.toHex('0'),
       data: data,
     };
 
