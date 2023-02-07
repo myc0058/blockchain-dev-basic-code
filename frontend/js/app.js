@@ -1,5 +1,3 @@
-/* eslint-disable no-undef */
-
 const Web3 = require('web3');
 const contractInfo = require('../../src/new-monkey/new-monkey.deployed.json');
 
