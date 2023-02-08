@@ -8,17 +8,17 @@ async function main() {
 
   const chainId = hre.network.config.chainId || 0;
 
-  const deployedMonkeyJson = fs.readFileSync(
+  const deployedContractJson = fs.readFileSync(
     __dirname + '/monkey.deployed.json',
     'utf-8',
   );
-  const deployedMonkey = JSON.parse(deployedMonkeyJson);
+  const deployedContract = JSON.parse(deployedContractJson);
   const monkey = (await ethers.getContractAt(
-    deployedMonkey.abi,
-    deployedMonkey.address,
+    deployedContract.abi,
+    deployedContract.address,
   )) as Monkey;
 
-  const transaction = await monkey.mint('brown');
+  const transaction = await monkey.mint('brown', getGasOption(chainId));
   await transaction.wait();
 }
 

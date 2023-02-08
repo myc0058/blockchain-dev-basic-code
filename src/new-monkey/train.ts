@@ -8,17 +8,17 @@ async function main() {
 
   const chainId = hre.network.config.chainId || 0;
 
-  const deployedMonkeyJson = fs.readFileSync(
+  const deployedContractJson = fs.readFileSync(
     __dirname + '/new-monkey.deployed.json',
     'utf-8',
   );
-  const deployedMonkey = JSON.parse(deployedMonkeyJson);
+  const deployedContract = JSON.parse(deployedContractJson);
   const newMonkey = (await ethers.getContractAt(
-    deployedMonkey.abi,
-    deployedMonkey.address,
+    deployedContract.abi,
+    deployedContract.address,
   )) as NewMonkey;
 
-  const transaction = await newMonkey.train(1);
+  const transaction = await newMonkey.train(1, getGasOption(chainId));
   await transaction.wait();
 }
 

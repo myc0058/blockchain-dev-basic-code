@@ -51,7 +51,7 @@ async function main() {
   const secondHistory = await greeter.getGreetingHistoryOne(1);
   console.log('secondtHistory: ' + secondHistory);
 
-  transaction = await greeter.withdraw(admin.address, gasOption);
+  transaction = await greeter.withdraw(admin.address, getGasOption(chainId));
   await transaction.wait();
 }
 
