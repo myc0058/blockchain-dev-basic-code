@@ -32,7 +32,7 @@ contract BasicCertificate is Ownable, ERC721Enumerable {
         return string(abi.encodePacked("data:image/svg+xml;base64,", Base64.encode(svg)));
     }
 
-    function mint(string memory name) external onlyOwner {
+    function mint(string memory name) external {
         _tokenIds.increment();
         uint256 tokenId = _tokenIds.current();
         _safeMint(msg.sender, tokenId);
