@@ -38,7 +38,7 @@ contract Greeter {
         return _greeting;
     }
 
-    function getGreetingHistoryCount() public view returns (uint256 count) {
+    function getGreetingHistoryCount() public view returns (uint256) {
         return _greetingHistory.length;
     }
 
